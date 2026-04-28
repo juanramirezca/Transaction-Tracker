@@ -1,31 +1,17 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from app import models
+
+from .database import engine, get_db
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-expenses = [
-    {
-        "id": 1,
-        "date": "8-Abr-2026",
-        "amount": 344.97,
-        "payment_method": "credit card",
-        "category": "food",
-    },
-    {
-        "id": 2,
-        "date": "14-Abr-2026",
-        "amount": 390,
-        "payment_method": "cash",
-        "category": "clothes",
-    },
-    {
-        "id": 3,
-        "date": "12-Abr-2026",
-        "amount": 213,
-        "payment_method": "transfer",
-        "category": "gas",
-    },
-]
+# TODO: Change the logic to start using the SQLite DB instead of the list of expenses
+# TODO: Update everything with appropriate responses and exceptions
 
 
 class Expense(BaseModel):
@@ -42,48 +28,52 @@ def hello_world():
 
 
 @app.get("/expenses")
-def get_expenses():
-    return expenses
+def get_expenses(db: Session = Depends(get_db)):
+    return db.query(models.Expense).all()
 
 
 @app.get("/expense/{expense_id}")
 def get_expense_by_id(expense_id: int):
-    for expense in expenses:
+    pass
+    """for expense in expenses:
         if expense_id == expense["id"]:
             return expense
 
-    return {"Error": f"The expense {expense_id} was not found"}
+    return {"Error": f"The expense {expense_id} was not found"}"""
 
 
 @app.post("/create-expense")
 def create_response(expense: Expense):
-    for exp in expenses:
+    pass
+    """for exp in expenses:
         if expense.id == exp["id"]:
             return {"Error": f"That expense id is duplicated"}
 
     expenses.append(expense.model_dump())
 
-    return {"Success": "The expense was appended sucessfully"}
+    return {"Success": "The expense was appended sucessfully"}"""
 
 
 @app.put("/update-expense/{expense_id}")
 def update_expense(expense_id: int, expense: Expense):
-    for exp in expenses:
+    pass
+    """for exp in expenses:
         if expense_id == exp["id"]:
             exp.update(expense.model_dump())
             return {"Success": "The expense was updated sucessfully"}
 
-    return {"Error": f"The expense {expense_id} was not found"}
+    return {"Error": f"The expense {expense_id} was not found"}"""
 
 
 @app.delete("/delete-expense/{expense_id}")
 def delete_expense(expense_id: int):
-    for exp in expenses:
+    pass
+    """for exp in expenses:
         if expense_id == exp["id"]:
             expenses.remove(exp)
             return {"Success": "The expense was deleted sucessfully"}
 
-    return {"Error": f"The expense {expense_id} was not found"}
+    return {"Error": f"The expense {expense_id} was not found"}"""
 
 
 """
