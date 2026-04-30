@@ -1,8 +1,8 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class Expense(BaseModel):
-    id: int
     date: str
     amount: float
     payment_method: str
@@ -10,6 +10,7 @@ class Expense(BaseModel):
 
 
 class ExpenseResponse(BaseModel):
+    id: UUID
     date: str
     amount: float
     payment_method: str

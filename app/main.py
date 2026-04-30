@@ -11,8 +11,10 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# TODO: Change the logic to start using the SQLite DB instead of the list of expenses
-# TODO: Update everything with appropriate responses and exceptions
+# TODO: Review that the responses and exceptions are working correctly
+# TODO: Start using some real data to see what are we missing so far:
+# 1. Change to datetime instead of a string. Can we use a calendar?
+# 2. Can we use a dropdown to select the expense method?
 
 
 @app.get("/expenses", response_model=list[Expense])
